@@ -1,4 +1,4 @@
--- FundFactory Open - SQLite Schema
+-- FactorFactory Open - SQLite Schema
 -- This schema defines the minimum tables required for local quantitative research.
 
 -- ============================================================

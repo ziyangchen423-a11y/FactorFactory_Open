@@ -1,5 +1,5 @@
 """
-FundFactory Open - Path resolution module.
+FactorFactory Open - Path resolution module.
 
 Provides stable project root detection and absolute path resolution.
 

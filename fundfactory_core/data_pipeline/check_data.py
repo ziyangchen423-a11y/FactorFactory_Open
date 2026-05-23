@@ -138,7 +138,7 @@ def check_data(db_path: str = None, *, verbose: bool = False) -> dict:
 
 def _print_table_report(results: dict, verbose: bool = False) -> None:
     print("\n" + "=" * 60)
-    print("  FundFactory Open - Data Quality Report")
+    print("  FactorFactory Open - Data Quality Report")
     print("=" * 60)
 
     print(f"\n{'Table':<20} {'Exists':<8} {'Count':>10}")
@@ -211,7 +211,7 @@ def _print_summary(results: dict) -> None:
 
 
 def main():
-    parser = argparse.ArgumentParser(description="Check FundFactory Open database")
+    parser = argparse.ArgumentParser(description="Check FactorFactory Open database")
     parser.add_argument("--db-path", help="Path to SQLite database (default: from settings)")
     parser.add_argument("-v", "--verbose", action="store_true", help="Print details")
     args = parser.parse_args()

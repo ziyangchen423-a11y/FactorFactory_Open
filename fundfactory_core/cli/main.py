@@ -1,5 +1,5 @@
 """
-FundFactory Open CLI entry point.
+FactorFactory Open CLI entry point.
 
 Usage:
     fundfactory init-db
@@ -143,7 +143,7 @@ def cmd_run_backtest(args):
 
 def main():
     parser = argparse.ArgumentParser(
-        description="FundFactory Open CLI",
+        description="FactorFactory Open CLI",
         formatter_class=argparse.RawDescriptionHelpFormatter,
         epilog="""
 Examples:

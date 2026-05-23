@@ -2,12 +2,12 @@
 
 ## 概述
 
-FundFactory Open 不提供真实数据库。用户使用自己的 Tushare token 同步数据。
+FactorFactory Open 不提供真实数据库。用户使用自己的 Tushare token 同步数据。
 
 ## 默认数据库路径
 
 ```
-data/fundfactory_open.db
+data/factorfactory_open.db
 ```
 
 ## 核心表

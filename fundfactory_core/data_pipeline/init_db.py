@@ -105,7 +105,7 @@ def init_db(db_path: str = None, *, verbose: bool = False) -> None:
     conn.commit()
     conn.close()
 
-    print(f"\nFundFactory Open database initialized at:\n  {db_path}")
+    print(f"\nFactorFactory Open database initialized at:\n  {db_path}")
     print(f"Tables: {len(tables_created)}")
     if verbose:
         for t in tables_created:
@@ -114,7 +114,7 @@ def init_db(db_path: str = None, *, verbose: bool = False) -> None:
 
 
 def main():
-    parser = argparse.ArgumentParser(description="Initialize FundFactory Open database")
+    parser = argparse.ArgumentParser(description="Initialize FactorFactory Open database")
     parser.add_argument("--db-path", help="Path to SQLite database (default: from settings)")
     parser.add_argument("-v", "--verbose", action="store_true", help="Print details")
     args = parser.parse_args()

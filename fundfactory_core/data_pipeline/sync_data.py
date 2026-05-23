@@ -105,7 +105,7 @@ def sync_data(
     if symbols:
         symbol_list = [s.strip() for s in symbols.split(",") if s.strip()]
 
-    print(f"\nFundFactory Open - Data Sync")
+    print(f"\nFactorFactory Open - Data Sync")
     print(f"  Provider: {provider}")
     print(f"  Database: {db_path}")
     print(f"  Date range: {start} - {end}")
@@ -379,7 +379,7 @@ def sync_data(
 
 
 def main():
-    parser = argparse.ArgumentParser(description="Sync data into FundFactory Open database")
+    parser = argparse.ArgumentParser(description="Sync data into FactorFactory Open database")
     parser.add_argument("--db-path", help="Path to SQLite database")
     parser.add_argument("--provider", default="tushare", help="Data provider (default: tushare)")
     parser.add_argument("--start", help="Start date YYYYMMDD (default: 20200101)")

@@ -1,11 +1,8 @@
-# FundFactory Open
+# FactorFactory Open - 因子工厂开源版
 
-**FundFactory Open** 是一个完全开源的本地 A 股量化研究底座。目标是为量化研究者、开发者、券商技术团队提供一个可独立运行的数据建库、因子计算和基础回测工具。
+**FactorFactory Open**（因子工厂开源版）是一个完全开源的本地 A 股量化研究底座。目标是为量化研究者、开发者、券商技术团队提供一个可独立运行的数据建库、因子计算和基础回测工具。
 
-定位说明：
-
-- **Open**：本地可复现的量化研究流程，开源免费。
-- **Pro**：完整商业网站体验、远程因子 API、QMT 接入，详情访问 FundFactory Pro。
+- 本地运行，无需账号系统
 
 ## 特性
 
@@ -15,15 +12,15 @@
 - 30+ 基础因子（动量、波动率、市值、估值、盈利等）
 - 基础日频回测（CLI + API）
 - Broker 接口预留（Paper / QMT 预留）
-- 无需登录、无需支付
+- 本地运行，无需账号系统
 
 ## 快速开始
 
 ### 1. 克隆
 
 ```bash
-git clone <FundFactory_Open>
-cd FundFactory_Open
+git clone <FactorFactory_Open>
+cd FactorFactory_Open
 ```
 
 ### 2. 安装依赖
@@ -119,31 +116,13 @@ fundfactory run-backtest --factor MOM_20D --start 20240101 --end 20260520
 
 ## 数据说明
 
-Open 版本默认使用用户自己的 `.env` 中的 `TUSHARE_TOKEN` 和本地 SQLite 文件。
+默认使用用户自己的 `.env` 中的 `TUSHARE_TOKEN` 和本地 SQLite 文件。
 
 不提供真实行情数据。用户需自行准备：
 
 - Tushare Pro API token
 - 或兼容 schema 的其他数据源
 
-## Open vs Pro
-
-| 能力 | Open | Pro |
-|------|------|-----|
-| 本地数据建库 | ✅ | ✅ |
-| 基础因子（30+） | ✅ | ✅ |
-| 基础回测 | ✅ | ✅ |
-| 可视化回测 UI | ❌ | ✅ |
-| 完整因子库（150+） | ❌ | ✅ |
-| 远程因子 API | ❌ | ✅ |
-| 用户/会员/支付 | ❌ | ✅ |
-| QMT 实盘接入 | ❌ | ✅（预留） |
-| 技术支持 | 社区 | 商业支持 |
-
 ## 许可证
 
 Apache License 2.0
-
-## 合作
-
-券商、机构、数据商合作请联系 FundFactory Pro 团队。

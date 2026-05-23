@@ -1,8 +1,8 @@
-# FundFactory Open
+# FactorFactory Open - 因子工厂开源版
 
 ## What it is
 
-FundFactory Open 是本地 A 股量化研究底座 Alpha 版，提供因子计算、数据同步和基础回测能力。
+FactorFactory Open（因子工厂开源版）是本地 A 股量化研究底座 Alpha 版，提供因子计算、数据同步和基础回测能力。
 
 ## What is included
 
@@ -15,9 +15,8 @@ FundFactory Open 是本地 A 股量化研究底座 Alpha 版，提供因子计�
 ## What is not included
 
 - 不提供真实数据库（用户自备 Tushare token）
-- 不包含商业网站 UI、登录/会员/支付系统
+- 不包含账号系统或在线服务后台
 - 不包含生产部署配置
-- 财务三表为实验性功能，取决于 Tushare 权限
 - 不包含真实券商交易功能
 
 ## Quick start
@@ -70,21 +69,6 @@ fundfactory run-factors --factor MOM_20D --date 20260520
 ```bash
 fundfactory run-backtest --factor MOM_20D --start 20240101 --end 20260520
 ```
-
-## Open vs Pro
-
-| | Open | Pro |
-|---|---|---|
-| 版本 | v0.1.0-alpha | 商业版 |
-| 代码 | 开源 | 闭源 |
-| 数据库 | 用户自备 | 内置 |
-| 数据源 | Tushare（自备 token） | 完整商业数据 |
-| 基础因子 | 10 个示例因子 | 更完整因子库 |
-| 日线行情 | 骨架（需 Tushare 权限） | 完整 |
-| 财务三表 | 实验性（取决于 Tushare 权限） | 完整 |
-| UI | 无 | 商业网站 UI |
-| 登录/会员/支付 | 无 | 完整系统 |
-| 生产部署 | 不支持 | 支持 |
 
 ## Roadmap
 

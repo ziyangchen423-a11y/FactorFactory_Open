@@ -1,5 +1,5 @@
 """
-FundFactory Open - Core configuration module.
+FactorFactory Open - Core configuration module.
 
 This module provides the foundational settings for the open-source version.
 All paths are configurable via environment variables with sensible defaults.
@@ -28,11 +28,11 @@ PROJECT_ROOT = PROJECT_ROOT
 TUSHARE_TOKEN = _get_env("TUSHARE_TOKEN", "")
 
 # ======================== Database ========================
-_DB_PATH_RAW = _get_env("FUNDFACTORY_DB_PATH", "data/fundfactory_open.db")
+_DB_PATH_RAW = _get_env("FUNDFACTORY_DB_PATH", "data/factorfactory_open.db")
 DB_PATH = resolve_path_str(_DB_PATH_RAW)
 
 # Ensure DB directory exists
-_db_dir_raw = _get_env("FUNDFACTORY_DB_PATH", "data/fundfactory_open.db")
+_db_dir_raw = _get_env("FUNDFACTORY_DB_PATH", "data/factorfactory_open.db")
 if _db_dir_raw != ":memory:" and "://" not in _db_dir_raw:
     import os
     _db_dirname = os.path.dirname(_db_dir_raw)

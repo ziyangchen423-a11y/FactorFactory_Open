@@ -1,5 +1,5 @@
 """
-Sample public factors - basic factor examples for FundFactory Open.
+Sample public factors - basic factor examples for FactorFactory Open.
 
 These are minimal implementations intended to demonstrate the factor system.
 Each factor follows the registry pattern: register_factor() called at module load time.

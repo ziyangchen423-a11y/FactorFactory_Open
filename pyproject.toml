@@ -3,14 +3,14 @@ requires = ["setuptools>=61.0"]
 build-backend = "setuptools.build_meta"
 
 [project]
-name = "fundfactory-open"
+name = "factorfactory-open"
 version = "0.1.0"
-description = "FundFactory Open - Local A-share quantitative research core library"
+description = "FactorFactory Open - 因子工厂开源版 - Local A-share quantitative research core library"
 readme = "README.md"
 requires-python = ">=3.10"
 license = { text = "MIT" }
 authors = [
-    { name = "FundFactory", email = "fundfactory@example.com" }
+    { name = "FactorFactory", email = "factorfactory@example.com" }
 ]
 keywords = ["quantitative", "finance", "a-share", "factor-engine", "backtest"]
 classifiers = [
@@ -41,8 +41,8 @@ dev = [
 fundfactory = "fundfactory_core.cli.main:main"
 
 [project.urls]
-Homepage = "https://github.com/fundfactory/fundfactory-open"
-Documentation = "https://github.com/fundfactory/fundfactory-open#readme"
+Homepage = "https://github.com/ziyangchen423-a11y/FactorFactory_Open"
+Documentation = "https://github.com/ziyangchen423-a11y/FactorFactory_Open#readme"
 
 [tool.setuptools.packages.find]
 where = ["."]

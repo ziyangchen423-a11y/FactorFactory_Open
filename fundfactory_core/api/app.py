@@ -1,5 +1,5 @@
 """
-FastAPI application for FundFactory Open.
+FastAPI application for FactorFactory Open.
 
 Provides local-only API endpoints for:
 - Health check
@@ -26,7 +26,7 @@ from fundfactory_core.factors.registry import factor_ids, get_all_metadata
 from fundfactory_core.backtest.engine import BacktestConfig, run_backtest
 
 app = FastAPI(
-    title="FundFactory Open API",
+    title="FactorFactory Open API",
     description="Local quantitative research API - no authentication required",
     version="0.1.0",
 )

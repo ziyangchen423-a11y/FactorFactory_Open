@@ -1,0 +1,21 @@
+# 环境变量
+.env
+
+# 数据库
+*.db
+*.sqlite
+*.sqlite3
+
+# 数据目录
+data/
+output/
+logs/
+
+# Python
+__pycache__/
+*.pyc
+.pytest_cache/
+.ruff_cache/
+
+# 系统
+.DS_Store

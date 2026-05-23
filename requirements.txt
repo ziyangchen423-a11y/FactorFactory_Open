@@ -1,0 +1,6 @@
+pandas
+numpy
+tushare
+fastapi
+uvicorn
+python-dotenv

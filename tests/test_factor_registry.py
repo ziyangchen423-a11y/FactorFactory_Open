@@ -1,7 +1,6 @@
 """
 Tests for fundfactory_core.factors.registry.
 """
-import pytest
 
 
 def test_factor_ids_returns_at_least_twenty():

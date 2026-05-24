@@ -8,10 +8,7 @@ Usage:
     from fundfactory_core.data_providers.tushare_provider import TushareProvider
     provider = TushareProvider(token="your_token_here")
 """
-import os
-import time
-from datetime import datetime
-from typing import Iterator, Optional
+from typing import Optional
 
 import pandas as pd
 
@@ -75,6 +72,8 @@ class TushareProvider(DataProvider):
 
     def _standardize_date(self, date_val) -> str:
         """Convert date to YYYYMMDD string."""
+        if pd.isna(date_val):
+            return None
         if isinstance(date_val, (int, float)):
             date_val = str(int(date_val))
         if isinstance(date_val, str) and len(date_val) == 8:
@@ -85,6 +84,16 @@ class TushareProvider(DataProvider):
             return dt.strftime("%Y%m%d")
         except Exception:
             return str(date_val)
+
+    def _string_or_none(self, value) -> str | None:
+        """Convert non-null scalar values to strings without numeric date coercion."""
+        if pd.isna(value):
+            return None
+        return str(value)
+
+    def _float_or_none(self, value) -> float | None:
+        """Convert non-null numeric values to float."""
+        return float(value) if pd.notna(value) else None
 
     def fetch_trading_calendar(self, start: str, end: str) -> list[dict]:
         """Fetch trading calendar."""
@@ -174,12 +183,14 @@ class TushareProvider(DataProvider):
         records = []
         for _, row in df.iterrows():
             rec = {"ts_code": str(row["ts_code"])}
-            for col in ["ann_date", "f_ann_date", "end_date", "revenue", "oper_cost",
-                        "sell_exp", "admin_exp", "fin_exp", "rd_exp", "operate_profit",
-                        "total_profit", "income_tax", "n_income", "n_income_attr_p",
-                        "basic_eps", "ebit", "ebitda", "update_flag"]:
+            for col in ["ann_date", "f_ann_date", "end_date"]:
+                rec[col] = self._standardize_date(row.get(col))
+            for col in ["revenue", "oper_cost", "sell_exp", "admin_exp", "fin_exp",
+                        "rd_exp", "operate_profit", "total_profit", "income_tax",
+                        "n_income", "n_income_attr_p", "basic_eps", "ebit", "ebitda"]:
                 val = row.get(col)
-                rec[col] = float(val) if pd.notna(val) else None
+                rec[col] = self._float_or_none(val)
+            rec["update_flag"] = self._string_or_none(row.get("update_flag"))
             records.append(rec)
         return records
 
@@ -193,13 +204,15 @@ class TushareProvider(DataProvider):
         records = []
         for _, row in df.iterrows():
             rec = {"ts_code": str(row["ts_code"])}
-            for col in ["ann_date", "f_ann_date", "end_date", "total_share", "money_cap",
-                        "accounts_receiv", "inventories", "total_cur_assets", "total_cur_liab",
-                        "fix_assets", "intan_assets", "goodwill", "total_assets", "total_liab",
-                        "st_borr", "lt_borr", "total_hldr_eqy_exc_min_int", "accounts_pay",
-                        "update_flag"]:
+            for col in ["ann_date", "f_ann_date", "end_date"]:
+                rec[col] = self._standardize_date(row.get(col))
+            for col in ["total_share", "money_cap", "accounts_receiv", "inventories",
+                        "total_cur_assets", "total_cur_liab", "fix_assets", "intan_assets",
+                        "goodwill", "total_assets", "total_liab", "st_borr", "lt_borr",
+                        "total_hldr_eqy_exc_min_int", "accounts_pay"]:
                 val = row.get(col)
-                rec[col] = float(val) if pd.notna(val) else None
+                rec[col] = self._float_or_none(val)
+            rec["update_flag"] = self._string_or_none(row.get("update_flag"))
             records.append(rec)
         return records
 
@@ -213,10 +226,12 @@ class TushareProvider(DataProvider):
         records = []
         for _, row in df.iterrows():
             rec = {"ts_code": str(row["ts_code"])}
-            for col in ["ann_date", "f_ann_date", "end_date", "net_profit", "c_fr_sale_sg",
-                        "n_cashflow_act", "n_cashflow_inv_act", "free_cashflow",
-                        "n_cash_flows_fnc_act", "update_flag"]:
+            for col in ["ann_date", "f_ann_date", "end_date"]:
+                rec[col] = self._standardize_date(row.get(col))
+            for col in ["net_profit", "c_fr_sale_sg", "n_cashflow_act", "n_cashflow_inv_act",
+                        "free_cashflow", "n_cash_flows_fnc_act"]:
                 val = row.get(col)
-                rec[col] = float(val) if pd.notna(val) else None
+                rec[col] = self._float_or_none(val)
+            rec["update_flag"] = self._string_or_none(row.get("update_flag"))
             records.append(rec)
         return records

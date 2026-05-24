@@ -24,7 +24,7 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent.parent))
 
-from fundfactory_core.config.settings import DB_PATH, TUSHARE_TOKEN, DEFAULT_SYNC_START
+from fundfactory_core.config.settings import DB_PATH, DEFAULT_SYNC_START
 
 
 # Table name aliases (CLI name -> actual table name(s))
@@ -105,7 +105,7 @@ def sync_data(
     if symbols:
         symbol_list = [s.strip() for s in symbols.split(",") if s.strip()]
 
-    print(f"\nFactorFactory Open - Data Sync")
+    print("\nFactorFactory Open - Data Sync")
     print(f"  Provider: {provider}")
     print(f"  Database: {db_path}")
     print(f"  Date range: {start} - {end}")
@@ -113,10 +113,10 @@ def sync_data(
     if symbol_list:
         print(f"  Symbols: {len(symbol_list)} specified")
     else:
-        print(f"  Symbols: all stocks (from stock_basic)")
+        print("  Symbols: all stocks (from stock_basic)")
     print(f"  Sleep between calls: {sleep}s")
     if dry_run:
-        print(f"  Mode: DRY RUN (no data will be written)")
+        print("  Mode: DRY RUN (no data will be written)")
 
     # Import provider
     from fundfactory_core.data_providers.tushare_provider import TushareProvider

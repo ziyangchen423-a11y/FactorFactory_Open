@@ -4,7 +4,6 @@ Base data provider interface.
 All data providers must implement this interface.
 """
 from abc import ABC, abstractmethod
-from typing import Iterator
 
 
 class DataProvider(ABC):

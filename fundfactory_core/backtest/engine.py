@@ -20,8 +20,7 @@ import json
 import os
 import sqlite3
 import uuid
-from dataclasses import dataclass, field
-from datetime import datetime
+from dataclasses import dataclass
 from pathlib import Path
 
 import numpy as np
@@ -386,8 +385,6 @@ def run_backtest(config: BacktestConfig, output_dir: str = None) -> BacktestResu
                         close_px = px_df.iloc[0]["close"]
                         period_pnl += shares * close_px * pct
 
-            # Also compute cash return
-            cash_return = cash * (0.0 / 36500)  # negligible interest
             portfolio_value = cash
             if positions:
                 conn = sqlite3.connect(f"file:{DB_PATH}?mode=ro", uri=True)
@@ -463,7 +460,7 @@ def run_backtest(config: BacktestConfig, output_dir: str = None) -> BacktestResu
             "volatility": volatility,
         }
 
-    print(f"\n  Results:")
+    print("\n  Results:")
     print(f"    Total Return:   {metrics['total_return']:.2f}%")
     print(f"    Annual Return:  {metrics['annual_return']:.2f}%")
     print(f"    Max Drawdown:   {metrics['max_drawdown']:.2f}%")

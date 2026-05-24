@@ -2,7 +2,6 @@
 Tests for fundfactory_core.data_pipeline.init_db.
 """
 import sqlite3
-import pytest
 from fundfactory_core.data_pipeline.init_db import init_db
 
 

@@ -1,8 +1,6 @@
 """
 Tests for fundfactory_core.config.paths path resolution.
 """
-import os
-import pytest
 from fundfactory_core.config import paths
 
 

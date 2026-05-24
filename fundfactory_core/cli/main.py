@@ -44,7 +44,7 @@ def cmd_sync_data(args):
 
 
 def cmd_list_factors(args):
-    from fundfactory_core.factors.registry import factor_ids, get_all_metadata
+    from fundfactory_core.factors.registry import get_all_metadata
     meta = get_all_metadata()
     print(f"\nAvailable factors ({len(meta)}):")
     for fid, m in meta.items():
@@ -52,7 +52,7 @@ def cmd_list_factors(args):
 
 
 def cmd_run_factors(args):
-    from fundfactory_core.factors.registry import get_calc_func
+    from fundfactory_core.factors.registry import factor_ids, get_calc_func
     import sqlite3
     from fundfactory_core.config.settings import DB_PATH
 
@@ -120,14 +120,14 @@ def cmd_run_backtest(args):
         slippage_rate=args.slippage or 0.0005,
     )
 
-    print(f"\nRunning backtest:")
+    print("\nRunning backtest:")
     print(f"  Factor: {config.factor_id}")
     print(f"  Period: {config.start_date} - {config.end_date}")
     print(f"  Benchmark: {config.benchmark}")
 
     try:
         result = run_backtest(config)
-        print(f"\n  Summary:")
+        print("\n  Summary:")
         print(f"    Total Return:   {result.total_return:.2f}%")
         print(f"    Annual Return:  {result.annual_return:.2f}%")
         print(f"    Max Drawdown:   {result.max_drawdown:.2f}%")

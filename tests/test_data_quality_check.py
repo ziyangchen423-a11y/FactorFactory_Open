@@ -7,7 +7,6 @@ Covers:
 - Partial data with financial three tables populated
 """
 import sqlite3
-import pytest
 from fundfactory_core.data_pipeline.check_data import check_data
 from fundfactory_core.data_pipeline.init_db import init_db
 

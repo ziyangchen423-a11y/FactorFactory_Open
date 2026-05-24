@@ -12,7 +12,13 @@ Factor categories:
 - Profitability: ROE, ROA
 """
 import sys
+import sqlite3
 from pathlib import Path
+
+import numpy as np
+
+from fundfactory_core.factors.registry import register_factor
+from fundfactory_core.config.settings import DB_PATH
 
 # Add core to path for direct script execution
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent.parent.parent))
@@ -22,10 +28,6 @@ def _require_numeric_deps():
     import numpy as np
     import pandas as pd
     return np, pd
-import sqlite3
-
-from fundfactory_core.factors.registry import register_factor
-from fundfactory_core.config.settings import DB_PATH
 
 
 def _get_db_conn(readonly: bool = True):
@@ -84,7 +86,6 @@ def _get_financial_data(end_date: str):
 
 def _calc_mom(ts_code: str, trade_date: str, window: int) -> float:
     """Generic momentum calculation: return over past `window` trading days."""
-    import numpy as np
     import pandas as pd
     conn = _get_db_conn()
     df = pd.read_sql("""
@@ -144,7 +145,7 @@ def _calc_vol(target_date: str, window: int):
     import pandas as pd
     conn = _get_db_conn()
     cutoff_df = pd.read_sql("""
-        SELECT trade_date FROM daily_data
+        SELECT DISTINCT trade_date FROM daily_data
         WHERE trade_date <= ?
         ORDER BY trade_date DESC
         LIMIT ?
@@ -154,13 +155,19 @@ def _calc_vol(target_date: str, window: int):
         return pd.DataFrame()
     cutoff = cutoff_df.iloc[-1]["trade_date"]
 
-    df = pd.read_sql(f"""
-        SELECT ts_code, std(pct_chg) as factor_value
+    # SQLite has no built-in STD(); compute manually via E[X²]-E[X]²
+    df = pd.read_sql("""
+        SELECT ts_code,
+               AVG(pct_chg) as mean_pct,
+               AVG(pct_chg * pct_chg) as mean_sq_pct
         FROM daily_data
         WHERE trade_date >= ? AND trade_date <= ?
         GROUP BY ts_code
     """, conn, params=[cutoff, target_date])
     conn.close()
+    if df.empty:
+        return pd.DataFrame()
+    df["factor_value"] = np.sqrt(np.maximum(df["mean_sq_pct"] - df["mean_pct"] ** 2, 0))
     df["factor_id"] = f"VOL_{window}D"
     df["calc_date"] = target_date
     return df
@@ -320,7 +327,6 @@ register_factor("PB_SIMPLE", {
 
 def _calc_ret(ts_code: str, trade_date: str, window: int) -> float:
     """通用单股票收益率计算：过去 window 交易日的累计收益率（百分比）。"""
-    import numpy as np
     import pandas as pd
     conn = _get_db_conn()
     df = pd.read_sql("""
@@ -369,11 +375,10 @@ def _register_ret(name: str, factor_id: str, window: int, category: str = "momen
 def _register_vol_ratio(name: str, factor_id: str, window: int):
     """注册量比因子：当日成交量 / 过去 window 日均成交量。"""
     def calc(target_date: str, db_path: str = None):
-        import numpy as np
         import pandas as pd
         conn = _get_db_conn()
         cutoff_df = pd.read_sql("""
-            SELECT trade_date FROM daily_data
+            SELECT DISTINCT trade_date FROM daily_data
             WHERE trade_date <= ?
             ORDER BY trade_date DESC
             LIMIT ?
@@ -419,11 +424,10 @@ def _register_vol_ratio(name: str, factor_id: str, window: int):
 def _register_amount_ratio(name: str, factor_id: str, window: int):
     """注册金额比因子：当日成交额 / 过去 window 日均成交额。"""
     def calc(target_date: str, db_path: str = None):
-        import numpy as np
         import pandas as pd
         conn = _get_db_conn()
         cutoff_df = pd.read_sql("""
-            SELECT trade_date FROM daily_data
+            SELECT DISTINCT trade_date FROM daily_data
             WHERE trade_date <= ?
             ORDER BY trade_date DESC
             LIMIT ?
@@ -468,11 +472,10 @@ def _register_amount_ratio(name: str, factor_id: str, window: int):
 def _register_amplitude(name: str, factor_id: str, window: int):
     """注册振幅因子：过去 window 日（最高价-最低价）/ 均价。"""
     def calc(target_date: str, db_path: str = None):
-        import numpy as np
         import pandas as pd
         conn = _get_db_conn()
         cutoff_df = pd.read_sql("""
-            SELECT trade_date FROM daily_data
+            SELECT DISTINCT trade_date FROM daily_data
             WHERE trade_date <= ?
             ORDER BY trade_date DESC
             LIMIT ?
@@ -481,7 +484,7 @@ def _register_amplitude(name: str, factor_id: str, window: int):
             conn.close()
             return pd.DataFrame()
         cutoff = cutoff_df.iloc[-1]["trade_date"]
-        df = pd.read_sql(f"""
+        df = pd.read_sql("""
             SELECT ts_code,
                    MAX(close) - MIN(close) as price_range,
                    AVG(close) as price_mean
@@ -516,7 +519,7 @@ def _register_close_position(name: str, factor_id: str, window: int):
         conn = _get_db_conn()
         # 需要过去 window 天内的最高和最低，用子查询
         cutoff_df = pd.read_sql("""
-            SELECT trade_date FROM daily_data
+            SELECT DISTINCT trade_date FROM daily_data
             WHERE trade_date <= ?
             ORDER BY trade_date DESC
             LIMIT ?
@@ -573,7 +576,7 @@ def _register_turnover(name: str, factor_id: str, window: int):
         import pandas as pd
         conn = _get_db_conn()
         cutoff_df = pd.read_sql("""
-            SELECT trade_date FROM daily_data
+            SELECT DISTINCT trade_date FROM daily_data
             WHERE trade_date <= ?
             ORDER BY trade_date DESC
             LIMIT ?
@@ -582,13 +585,12 @@ def _register_turnover(name: str, factor_id: str, window: int):
             conn.close()
             return pd.DataFrame()
         cutoff = cutoff_df.iloc[-1]["trade_date"]
-        df = pd.read_sql(f"""
+        df = pd.read_sql("""
             SELECT ts_code, AVG(vol) as avg_vol
             FROM daily_data
             WHERE trade_date >= ? AND trade_date <= ?
             GROUP BY ts_code
         """, conn, params=[cutoff, target_date])
-        conn.close()
         # 获取总股本
         shares_df = pd.read_sql("""
             SELECT ts_code, total_share FROM balance_sheet
@@ -622,7 +624,7 @@ def _register_vol_volatility(name: str, factor_id: str, window: int):
         import pandas as pd
         conn = _get_db_conn()
         cutoff_df = pd.read_sql("""
-            SELECT trade_date FROM daily_data
+            SELECT DISTINCT trade_date FROM daily_data
             WHERE trade_date <= ?
             ORDER BY trade_date DESC
             LIMIT ?
@@ -631,9 +633,11 @@ def _register_vol_volatility(name: str, factor_id: str, window: int):
             conn.close()
             return pd.DataFrame()
         cutoff = cutoff_df.iloc[-1]["trade_date"]
-        df = pd.read_sql(f"""
+        # SQLite has no built-in STD(); compute manually via E[X²]-E[X]²
+        df = pd.read_sql("""
             SELECT ts_code,
-                   STD(vol) / NULLIF(AVG(vol), 0) as factor_value
+                   AVG(vol) as mean_vol,
+                   AVG(vol * vol) as mean_sq_vol
             FROM daily_data
             WHERE trade_date >= ? AND trade_date <= ?
             GROUP BY ts_code
@@ -641,6 +645,7 @@ def _register_vol_volatility(name: str, factor_id: str, window: int):
         conn.close()
         if df.empty:
             return pd.DataFrame()
+        df["factor_value"] = np.sqrt(np.maximum(df["mean_sq_vol"] - df["mean_vol"] ** 2, 0)) / np.maximum(df["mean_vol"], 1e-9)
         df["factor_id"] = factor_id
         df["calc_date"] = target_date
         df = df[["ts_code", "factor_value", "factor_id", "calc_date"]]
@@ -659,11 +664,10 @@ def _register_vol_volatility(name: str, factor_id: str, window: int):
 def _register_price_osc(name: str, factor_id: str, window: int):
     """注册价格摆动因子：收盘价 / 过去 window 日均价。"""
     def calc(target_date: str, db_path: str = None):
-        import numpy as np
         import pandas as pd
         conn = _get_db_conn()
         cutoff_df = pd.read_sql("""
-            SELECT trade_date FROM daily_data
+            SELECT DISTINCT trade_date FROM daily_data
             WHERE trade_date <= ?
             ORDER BY trade_date DESC
             LIMIT ?

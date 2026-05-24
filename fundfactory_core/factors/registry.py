@@ -6,6 +6,7 @@ Factor modules in fundfactory_core.factors.public are auto-loaded.
 import os
 import importlib
 import pkgutil
+import sys
 from typing import Callable, Optional
 
 # Internal registry: factor_id -> {"metadata": dict, "calc_func": callable}
@@ -47,11 +48,15 @@ def _auto_load_public_factors() -> None:
     import fundfactory_core.factors.public as package
     package_path = os.path.dirname(package.__file__)
     for _, module_name, _ in pkgutil.iter_modules([package_path]):
+        full_name = f"fundfactory_core.factors.public.{module_name}"
         try:
-            importlib.import_module(f"fundfactory_core.factors.public.{module_name}")
+            if full_name in sys.modules:
+                importlib.reload(sys.modules[full_name])
+            else:
+                importlib.import_module(full_name)
         except ImportError as e:
             import warnings
-            warnings.warn(f"Failed to load factor module 'fundfactory_core.factors.public.{module_name}': {e}")
+            warnings.warn(f"Failed to load factor module '{full_name}': {e}")
 
 
 # Auto-load on import

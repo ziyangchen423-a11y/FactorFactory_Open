@@ -22,7 +22,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 
 from fundfactory_core.config.settings import DB_PATH, settings
-from fundfactory_core.factors.registry import factor_ids, get_all_metadata
+from fundfactory_core.factors.registry import get_all_metadata
 from fundfactory_core.backtest.engine import BacktestConfig, run_backtest
 
 app = FastAPI(
@@ -31,11 +31,11 @@ app = FastAPI(
     version="0.1.0",
 )
 
-# CORS - allow all local origins
+# CORS - local development only.
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],
-    allow_credentials=True,
+    allow_origins=["http://localhost:8001", "http://127.0.0.1:8001"],
+    allow_credentials=False,
     allow_methods=["*"],
     allow_headers=["*"],
 )
@@ -187,7 +187,7 @@ def get_backtest_results(run_id: str):
 
 def _date_range(start: str, end: str):
     """Yield dates in range YYYYMMDD."""
-    from datetime import datetime, timedelta
+    from datetime import timedelta
     dt = datetime.strptime(start, "%Y%m%d")
     end_dt = datetime.strptime(end, "%Y%m%d")
     while dt <= end_dt:
@@ -197,4 +197,4 @@ def _date_range(start: str, end: str):
 
 if __name__ == "__main__":
     import uvicorn
-    uvicorn.run(app, host="0.0.0.0", port=8001)
+    uvicorn.run(app, host="127.0.0.1", port=8001)

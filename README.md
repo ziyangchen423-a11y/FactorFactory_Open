@@ -6,7 +6,7 @@ FactorFactory Open（因子工厂开源版）是本地 A 股量化研究底座 A
 
 ## What is included
 
-- **10 个示例因子**：动量、波动率、估值等基础因子
+- **98 个内置因子**：覆盖财务、估值、成长、盈利质量、偿债、运营效率、费用结构、动量、反转、量价、技术、波动率和流动性
 - **数据同步**：支持 Tushare 接口同步交易日历、股票基本信息、日线行情、复权因子
 - **因子计算**：CLI 命令计算因子值并存入本地 SQLite 数据库
 - **基础回测**：支持单因子分层回测，输出收益率、最大回撤、夏普比率等指标
@@ -64,6 +64,27 @@ fundfactory run-backtest --factor MOM_20D --start 20240101 --end 20260520
 fundfactory run-factors --factor MOM_20D --date 20260520
 ```
 
+## Built-in factors
+
+当前开源版注册 `98` 个因子：
+
+| 类别 | 数量 | 示例 |
+|---|---:|---|
+| 动量/收益 | 13 | `MOM_20D`, `MOM_120D`, `RET_20D`, `WEIGHTED_MOM_20D` |
+| 盈利能力 | 12 | `ROE`, `ROA`, `PROF_01`, `PROF_04` |
+| 波动/风险 | 10 | `VOL_20D`, `ATR_20D`, `DOWNSIDE_VOL_20D` |
+| 成长能力 | 8 | `GROW_01`, `GROW_02`, `GROW_08` |
+| 偿债/杠杆 | 8 | `DEBT_01`, `DEBT_02`, `DEBT_05` |
+| 运营效率 | 8 | `OPER_01`, `OPER_02`, `OPER_05` |
+| 估值 | 7 | `PE_SIMPLE`, `PB_SIMPLE`, `VALU_01`, `VALU_04` |
+| 盈利质量 | 7 | `QUAL_01`, `QUAL_04`, `QUAL_05` |
+| 技术指标 | 6 | `MA_DEV_20D`, `RSI_20D`, `WILLIAMS_R_20D` |
+| 成交量/额 | 5 | `VOL_RATIO_20D`, `AMOUNT_RATIO_20D` |
+| 费用结构 | 5 | `EXP_01`, `EXP_04`, `EXP_05` |
+| 其他 | 9 | 规模、流动性、反转、彩票效应等 |
+
+其中 `VALU_05` 为股息率占位因子：当前 open schema 尚无股息字段，已注册但会返回空结果，避免伪造数据。`PROF_10`、`GROW_03`、`QUAL_06` 是 open schema 下的近似口径，metadata 中有说明。
+
 ## Run backtest
 
 ```bash
@@ -80,4 +101,4 @@ fundfactory run-backtest --factor MOM_20D --start 20240101 --end 20260520
 
 ## License
 
-See [LICENSE](LICENSE) file.
+Apache License 2.0. See [LICENSE](LICENSE) file.

@@ -34,6 +34,23 @@ data/factorfactory_open.db
 2. 获取 token
 3. 在 `.env` 中配置 `TUSHARE_TOKEN`
 
+## 因子数据依赖
+
+当前开源版内置 `98` 个因子，按数据依赖分为三类：
+
+| 数据依赖 | 因子类型 | 说明 |
+|---|---|---|
+| `daily_data` | 动量、反转、技术、波动率、部分量价因子 | 只需要日线行情即可计算 |
+| `daily_data + balance_sheet` | 市值、换手率、部分估值因子 | 需要总股本或权益数据 |
+| `income_statement + balance_sheet + cash_flow` | 盈利、成长、质量、偿债、运营、费用结构 | 依赖财务三表，受 Tushare 权限和披露完整度影响 |
+
+部分因子在 open schema 下采用明确标注的近似口径：
+
+- `PROF_10`：当前缺少扣非净利润字段，暂以 ROE 近似。
+- `GROW_03`：当前缺少扣非净利润字段，暂以归母净利润同比近似。
+- `QUAL_06`：当前缺少 `adj_lossgain`，暂以净利润与营业利润差额近似。
+- `VALU_05`：当前缺少股息字段，注册为占位因子并返回空结果。
+
 ## Tushare 权限不足
 
 部分接口需要较高的 Tushare 积分权限。处理方式：

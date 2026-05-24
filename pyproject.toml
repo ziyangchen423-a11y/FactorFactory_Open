@@ -8,15 +8,15 @@ version = "0.1.0"
 description = "FactorFactory Open - 因子工厂开源版 - Local A-share quantitative research core library"
 readme = "README.md"
 requires-python = ">=3.10"
-license = { text = "MIT" }
+license = { text = "Apache-2.0" }
 authors = [
-    { name = "FactorFactory", email = "factorfactory@example.com" }
+    { name = "FactorFactory Open Contributors" }
 ]
 keywords = ["quantitative", "finance", "a-share", "factor-engine", "backtest"]
 classifiers = [
     "Development Status :: 3 - Alpha",
     "Intended Audience :: Financial and Insurance Industry",
-    "License :: OSI Approved :: MIT License",
+    "License :: OSI Approved :: Apache Software License",
     "Programming Language :: Python :: 3",
     "Programming Language :: Python :: 3.10",
     "Programming Language :: Python :: 3.11",

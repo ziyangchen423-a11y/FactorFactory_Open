@@ -41,25 +41,28 @@ cp fundfactory_core/.env.example .env
 # 编辑 .env，填入 TUSHARE_TOKEN（从 https://tushare.pro/ 获取）
 
 # 可选：指定自定义项目根目录
-export FUNDFACTORY_PROJECT_ROOT=/path/to/your/project
+export FACTORFACTORY_PROJECT_ROOT=/path/to/your/project
 # 可选：指定自定义数据库路径（相对路径基于 PROJECT_ROOT）
-export FUNDFACTORY_DB_PATH=data/my_custom.db
+export FACTORFACTORY_DB_PATH=data/my_custom.db
 ```
 
 项目根目录（PROJECT_ROOT）解析规则：
-1. `FUNDFACTORY_PROJECT_ROOT` 环境变量（优先）
-2. `fundfactory_core/` 的父目录（默认）
+1. `FACTORFACTORY_PROJECT_ROOT` 环境变量（优先）
+2. `FUNDFACTORY_PROJECT_ROOT` 环境变量（旧名称兼容）
+3. `fundfactory_core/` 的父目录（默认）
 
 路径说明：
-- `FUNDFACTORY_DB_PATH` 支持绝对路径或相对于 PROJECT_ROOT 的路径
-- `FUNDFACTORY_OUTPUT_DIR` 支持绝对路径或相对于 PROJECT_ROOT 的路径
+- `FACTORFACTORY_DB_PATH` 支持绝对路径或相对于 PROJECT_ROOT 的路径
+- `FACTORFACTORY_OUTPUT_DIR` 支持绝对路径或相对于 PROJECT_ROOT 的路径
 
 ### 4. 初始化数据库
 
 ```bash
 python -m fundfactory_core.cli.main init-db
 # 或使用便捷命令（如果配置了 PATH）
-fundfactory init-db
+factorfactory init-db
+# 或使用缩写
+ff init-db
 ```
 
 ### 5. 同步数据（需要 Tushare Token）
@@ -106,12 +109,15 @@ python -m fundfactory_core.api.app
 ## CLI 完整命令
 
 ```bash
-fundfactory init-db
-fundfactory sync-data --provider tushare --start 20200101 --end 20260520
-fundfactory check-data
-fundfactory list-factors
-fundfactory run-factors --factor MOM_20D --date 20260520
-fundfactory run-backtest --factor MOM_20D --start 20240101 --end 20260520
+factorfactory init-db
+factorfactory sync-data --provider tushare --start 20200101 --end 20260520
+factorfactory check-data
+factorfactory list-factors
+factorfactory run-factors --factor MOM_20D --date 20260520
+factorfactory run-backtest --factor MOM_20D --start 20240101 --end 20260520
+
+# 缩写命令
+ff check-data
 ```
 
 ## 数据说明

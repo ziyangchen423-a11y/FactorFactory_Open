@@ -63,18 +63,18 @@ data/factorfactory_open.db
 
 ```bash
 # 完整同步
-python3 -m fundfactory_core.cli.main sync-data --provider tushare --start 20200101
+factorfactory sync-data --provider tushare --start 20200101
 
 # 指定日期范围
-python3 -m fundfactory_core.cli.main sync-data --provider tushare --start 20240101 --end 20241231
+factorfactory sync-data --provider tushare --start 20240101 --end 20241231
 
 # 仅同步交易日历
-python3 -m fundfactory_core.cli.main sync-data --provider tushare --calendar-only
+ff sync-data --provider tushare --tables trading_calendar
 ```
 
 ## 数据检查
 
 ```bash
 # 检查数据完整性
-python3 -m fundfactory_core.cli.main check-data
+factorfactory check-data
 ```

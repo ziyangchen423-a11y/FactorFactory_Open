@@ -5,8 +5,9 @@ Provides stable project root detection and absolute path resolution.
 
 Rules:
 - PROJECT_ROOT priority:
-  1. FUNDFACTORY_PROJECT_ROOT env var
-  2. fundfactory_core/.. (parent of fundfactory_core package)
+  1. FACTORFACTORY_PROJECT_ROOT env var
+  2. FUNDFACTORY_PROJECT_ROOT env var (legacy)
+  3. fundfactory_core/.. (parent of fundfactory_core package)
 - .env is loaded from PROJECT_ROOT/.env if it exists (silent failure)
 - Relative paths in config vars are resolved from PROJECT_ROOT
 """
@@ -15,7 +16,7 @@ from pathlib import Path
 
 # ======================== Project Root ========================
 # Determine project root
-_env_root = os.environ.get("FUNDFACTORY_PROJECT_ROOT", "")
+_env_root = os.environ.get("FACTORFACTORY_PROJECT_ROOT") or os.environ.get("FUNDFACTORY_PROJECT_ROOT", "")
 if _env_root:
     PROJECT_ROOT = Path(_env_root).resolve()
 else:

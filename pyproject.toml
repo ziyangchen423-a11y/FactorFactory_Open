@@ -38,7 +38,8 @@ dev = [
 ]
 
 [project.scripts]
-fundfactory = "fundfactory_core.cli.main:main"
+factorfactory = "fundfactory_core.cli.main:main"
+ff = "fundfactory_core.cli.main:main"
 
 [project.urls]
 Homepage = "https://github.com/ziyangchen423-a11y/FactorFactory_Open"

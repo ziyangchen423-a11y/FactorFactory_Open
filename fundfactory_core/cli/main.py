@@ -2,11 +2,14 @@
 FactorFactory Open CLI entry point.
 
 Usage:
-    fundfactory init-db
-    fundfactory sync-data --provider tushare --start 20200101
-    fundfactory check-data
-    fundfactory run-factors --factor MOM_20D --date 20260520
-    fundfactory run-backtest --factor MOM_20D --start 20240101 --end 20260520
+    factorfactory init-db
+    factorfactory sync-data --provider tushare --start 20200101
+    factorfactory check-data
+    factorfactory run-factors --factor MOM_20D --date 20260520
+    factorfactory run-backtest --factor MOM_20D --start 20240101 --end 20260520
+
+Short alias:
+    ff check-data
 """
 import argparse
 import sys
@@ -147,12 +150,13 @@ def main():
         formatter_class=argparse.RawDescriptionHelpFormatter,
         epilog="""
 Examples:
-  fundfactory init-db
-  fundfactory sync-data --provider tushare --start 20200101
-  fundfactory check-data
-  fundfactory list-factors
-  fundfactory run-factors --factor MOM_20D --date 20260520
-  fundfactory run-backtest --factor MOM_20D --start 20240101 --end 20260520
+  factorfactory init-db
+  factorfactory sync-data --provider tushare --start 20200101
+  factorfactory check-data
+  factorfactory list-factors
+  factorfactory run-factors --factor MOM_20D --date 20260520
+  factorfactory run-backtest --factor MOM_20D --start 20240101 --end 20260520
+  ff check-data
         """
     )
     sub = parser.add_subparsers(dest="command", required=True)

@@ -211,21 +211,21 @@ def run_backtest(config: BacktestConfig, output_dir: str = None) -> BacktestResu
     if not trade_dates:
         raise ValueError(
             f"No trading dates found in range {config.start_date} - {config.end_date}. "
-            "Run fundfactory sync-data --tables trading_calendar first."
+            "Run factorfactory sync-data --tables trading_calendar first."
         )
 
     if _count_factor_values(config.factor_id, trade_dates) == 0:
         raise ValueError(
             f"No factor values found for {config.factor_id} in range "
             f"{config.start_date} - {config.end_date}. "
-            "Run fundfactory run-factors first."
+            "Run factorfactory run-factors first."
         )
 
     if _count_daily_rows(trade_dates) == 0:
         raise ValueError(
             f"No daily_data found for return dates in range "
             f"{config.start_date} - {config.end_date}. "
-            "Run fundfactory sync-data --tables daily_data first."
+            "Run factorfactory sync-data --tables daily_data first."
         )
 
     print(f"  Total trading days: {len(trade_dates)}")

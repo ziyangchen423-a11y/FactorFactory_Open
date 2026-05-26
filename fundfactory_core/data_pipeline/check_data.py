@@ -3,7 +3,7 @@ Check data command - validates the Open core database.
 
 Usage:
     python -m fundfactory_core.data_pipeline.check_data
-    fundfactory check-data
+    factorfactory check-data
 """
 import argparse
 import os
@@ -31,15 +31,15 @@ REQUIRED_TABLES = [
 FINANCIAL_TABLES = {"income_statement", "balance_sheet", "cash_flow"}
 
 NEXT_STEP_COMMANDS = {
-    "trading_calendar": "fundfactory sync-data --tables trading_calendar",
-    "stock_basic": "fundfactory sync-data --tables stock_basic",
-    "daily_data": "fundfactory sync-data --tables daily_data --symbols <code> --start <YYYYMMDD>",
-    "adj_factor": "fundfactory sync-data --tables adj_factor --symbols <code> --start <YYYYMMDD>",
-    "income_statement": "fundfactory sync-data --tables income_statement --symbols <code>",
-    "balance_sheet": "fundfactory sync-data --tables balance_sheet --symbols <code>",
-    "cash_flow": "fundfactory sync-data --tables cash_flow --symbols <code>",
-    "factor_values": "fundfactory run-factors --factor <FACTOR_ID> --date <YYYYMMDD>",
-    "backtest_results": "fundfactory run-backtest --factor <FACTOR_ID>",
+    "trading_calendar": "factorfactory sync-data --tables trading_calendar",
+    "stock_basic": "factorfactory sync-data --tables stock_basic",
+    "daily_data": "factorfactory sync-data --tables daily_data --symbols <code> --start <YYYYMMDD>",
+    "adj_factor": "factorfactory sync-data --tables adj_factor --symbols <code> --start <YYYYMMDD>",
+    "income_statement": "factorfactory sync-data --tables income_statement --symbols <code>",
+    "balance_sheet": "factorfactory sync-data --tables balance_sheet --symbols <code>",
+    "cash_flow": "factorfactory sync-data --tables cash_flow --symbols <code>",
+    "factor_values": "factorfactory run-factors --factor <FACTOR_ID> --date <YYYYMMDD>",
+    "backtest_results": "factorfactory run-backtest --factor <FACTOR_ID>",
 }
 
 
@@ -67,8 +67,8 @@ def check_data(db_path: str = None, *, verbose: bool = False) -> dict:
     if not os.path.exists(db_path):
         results["status"] = "FAIL"
         results["messages"].append(f"Database not found: {db_path}")
-        results["messages"].append("Run 'fundfactory init-db' first.")
-        results["next_steps"].append("fundfactory init-db --db-path " + db_path)
+        results["messages"].append("Run 'factorfactory init-db' first.")
+        results["next_steps"].append("factorfactory init-db --db-path " + db_path)
         _print_summary(results)
         return results
 
@@ -89,9 +89,9 @@ def check_data(db_path: str = None, *, verbose: bool = False) -> dict:
     if results["status"] == "FAIL":
         missing = [t for t, v in results["tables"].items() if not v["exists"]]
         results["messages"].append(f"Missing tables: {', '.join(missing)}")
-        results["messages"].append("Run 'fundfactory init-db' first.")
+        results["messages"].append("Run 'factorfactory init-db' first.")
         for t in missing:
-            results["next_steps"].append("fundfactory init-db")
+            results["next_steps"].append("factorfactory init-db")
             break
         conn.close()
         _print_summary(results)
@@ -127,7 +127,7 @@ def check_data(db_path: str = None, *, verbose: bool = False) -> dict:
         count = info["count"]
         if count == 0:
             results["status"] = "WARN"
-            hint = NEXT_STEP_COMMANDS.get(table, f"fundfactory sync-data --tables {table}")
+            hint = NEXT_STEP_COMMANDS.get(table, f"factorfactory sync-data --tables {table}")
             results["next_steps"].append(f"{table} is empty. Hint: {hint}")
 
     _print_table_report(results, verbose=verbose)
@@ -178,7 +178,7 @@ def _print_table_report(results: dict, verbose: bool = False) -> None:
         print("-" * 60)
         for table, info in results["tables"].items():
             if info["count"] == 0:
-                hint = NEXT_STEP_COMMANDS.get(table, f"fundfactory sync-data --tables {table}")
+                hint = NEXT_STEP_COMMANDS.get(table, f"factorfactory sync-data --tables {table}")
                 print(f"  {table}: empty  -> {hint}")
 
 

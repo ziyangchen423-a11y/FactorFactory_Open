@@ -3,7 +3,7 @@ Init DB command - creates the Open core database schema.
 
 Usage:
     python -m fundfactory_core.data_pipeline.init_db
-    fundfactory init-db
+    factorfactory init-db
 """
 import argparse
 import os
@@ -110,7 +110,7 @@ def init_db(db_path: str = None, *, verbose: bool = False) -> None:
     if verbose:
         for t in tables_created:
             print(f"  - {t}")
-    print("\nNext: run 'fundfactory sync-data --provider tushare --start 20200101' to fetch data.")
+    print("\nNext: run 'factorfactory sync-data --provider tushare --start 20200101' to fetch data.")
 
 
 def main():

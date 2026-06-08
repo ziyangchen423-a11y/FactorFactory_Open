@@ -14,9 +14,17 @@ from fundfactory_core.config.paths import PROJECT_ROOT, resolve_path_str, ensure
 
 
 def _get_env(key: str, default: str = "") -> str:
-    """Get environment variable, falling back to default."""
+    """Get environment variable, falling back to legacy FUNDFACTORY_* names."""
     import os
-    return os.getenv(key, default)
+    value = os.getenv(key)
+    if value is not None:
+        return value
+    if key.startswith("FACTORFACTORY_"):
+        legacy_key = key.replace("FACTORFACTORY_", "FUNDFACTORY_", 1)
+        legacy_value = os.getenv(legacy_key)
+        if legacy_value is not None:
+            return legacy_value
+    return default
 
 
 # ======================== Project Root ========================
@@ -28,11 +36,11 @@ PROJECT_ROOT = PROJECT_ROOT
 TUSHARE_TOKEN = _get_env("TUSHARE_TOKEN", "")
 
 # ======================== Database ========================
-_DB_PATH_RAW = _get_env("FUNDFACTORY_DB_PATH", "data/factorfactory_open.db")
+_DB_PATH_RAW = _get_env("FACTORFACTORY_DB_PATH", "data/factorfactory_open.db")
 DB_PATH = resolve_path_str(_DB_PATH_RAW)
 
 # Ensure DB directory exists
-_db_dir_raw = _get_env("FUNDFACTORY_DB_PATH", "data/factorfactory_open.db")
+_db_dir_raw = _get_env("FACTORFACTORY_DB_PATH", "data/factorfactory_open.db")
 if _db_dir_raw != ":memory:" and "://" not in _db_dir_raw:
     import os
     _db_dirname = os.path.dirname(_db_dir_raw)
@@ -40,25 +48,25 @@ if _db_dir_raw != ":memory:" and "://" not in _db_dir_raw:
         ensure_dir(_db_dirname)
 
 # ======================== Directories ========================
-_OUTPUT_DIR_RAW = _get_env("FUNDFACTORY_OUTPUT_DIR", "output")
+_OUTPUT_DIR_RAW = _get_env("FACTORFACTORY_OUTPUT_DIR", "output")
 OUTPUT_DIR = resolve_path_str(_OUTPUT_DIR_RAW)
 
 # Ensure output directory exists
 ensure_dir(_OUTPUT_DIR_RAW)
 
 # ======================== Data Provider ========================
-PROVIDER = _get_env("FUNDFACTORY_PROVIDER", "tushare")
+PROVIDER = _get_env("FACTORFACTORY_PROVIDER", "tushare")
 
 # ======================== Sync Settings ========================
-DEFAULT_SYNC_START = _get_env("FUNDFACTORY_SYNC_START", "20200101")
+DEFAULT_SYNC_START = _get_env("FACTORFACTORY_SYNC_START", "20200101")
 
 # ======================== Backtest Settings ========================
-DEFAULT_BENCHMARK = _get_env("FUNDFACTORY_BENCHMARK", "000300.SH")
-DEFAULT_FEE_RATE = float(_get_env("FUNDFACTORY_FEE_RATE", "0.0003"))
-DEFAULT_SLIPPAGE = float(_get_env("FUNDFACTORY_SLIPPAGE", "0.0005"))
-DEFAULT_REBALANCE_FREQ = int(_get_env("FUNDFACTORY_REBALANCE_FREQ", "20"))
-DEFAULT_TOP_PCT = float(_get_env("FUNDFACTORY_TOP_PCT", "0.1"))
-DEFAULT_INITIAL_CASH = float(_get_env("FUNDFACTORY_INITIAL_CASH", "1000000"))
+DEFAULT_BENCHMARK = _get_env("FACTORFACTORY_BENCHMARK", "000300.SH")
+DEFAULT_FEE_RATE = float(_get_env("FACTORFACTORY_FEE_RATE", "0.0003"))
+DEFAULT_SLIPPAGE = float(_get_env("FACTORFACTORY_SLIPPAGE", "0.0005"))
+DEFAULT_REBALANCE_FREQ = int(_get_env("FACTORFACTORY_REBALANCE_FREQ", "20"))
+DEFAULT_TOP_PCT = float(_get_env("FACTORFACTORY_TOP_PCT", "0.1"))
+DEFAULT_INITIAL_CASH = float(_get_env("FACTORFACTORY_INITIAL_CASH", "1000000"))
 
 # ======================== Safety ========================
 DRY_RUN = _get_env("DRY_RUN", "true").lower() in {"1", "true", "yes"}

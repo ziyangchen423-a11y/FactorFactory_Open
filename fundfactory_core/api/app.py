@@ -79,7 +79,7 @@ def health():
 def data_status():
     import sqlite3
     if not os.path.exists(DB_PATH):
-        raise HTTPException(status_code=503, detail="Database not initialized. Run fundfactory init-db first.")
+        raise HTTPException(status_code=503, detail="Database not initialized. Run factorfactory init-db first.")
     conn = sqlite3.connect(f"file:{DB_PATH}?mode=ro", uri=True)
     cursor = conn.cursor()
     tables = ["trading_calendar", "stock_basic", "daily_data", "income_statement", "balance_sheet", "cash_flow"]

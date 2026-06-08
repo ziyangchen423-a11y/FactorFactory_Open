@@ -3,7 +3,7 @@ Sync data command - fetches data from Tushare and writes to the Open database.
 
 Usage:
     python -m fundfactory_core.data_pipeline.sync_data --provider tushare --start 20200101 --end 20260520
-    fundfactory sync-data --provider tushare --start 20200101
+    factorfactory sync-data --provider tushare --start 20200101
 
 Supported tables:
     trading_calendar  - exchange trading calendar
@@ -77,7 +77,7 @@ def sync_data(
 
     if not os.path.exists(db_path):
         print(f"FAIL: Database not found at {db_path}")
-        print("Run 'fundfactory init-db' first.")
+        print("Run 'factorfactory init-db' first.")
         sys.exit(1)
 
     if provider != "tushare":
@@ -374,7 +374,7 @@ def sync_data(
             print(f"    ... and {len(total_errors) - 10} more errors")
     else:
         print("  Sync complete with no errors.")
-    print("  Run 'fundfactory check-data' to verify.")
+    print("  Run 'factorfactory check-data' to verify.")
     print("=" * 50)
 
 
